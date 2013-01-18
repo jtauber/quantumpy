@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # encoding: utf-8
 
 from cmath import exp, pi, sqrt
@@ -79,3 +80,21 @@ class Psi:
                 self.amplitudes[i] = (old_amplitudes[i] - old_amplitudes[i + (1 << qubit)]) / sqrt(2)
             else:  # if one
                 self.amplitudes[i] = (old_amplitudes[i - (1 << qubit)] - old_amplitudes[i]) / sqrt(2)
+
+
+if __name__ == "__main__":
+    
+    # set up a system with 3 qubits
+    psi = Psi(3)
+    
+    # apply Hadamard gate to qubit 1 (second qubit)
+    psi.hadamard(1)
+    # apply Hadamard gate to qubit 2 (third qubit)
+    psi.hadamard(2)
+    # apply π/8 gate to qubit 1
+    psi.pi_over_eight(1)
+    # apply controlled-not gate with qubit 1 controlling qubit 0 (first qubit)
+    psi.controlled_not(1, 0)
+    
+    # collapse and print the result (a tuple of 3 classical bits)
+    print(psi.collapse())
