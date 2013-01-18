@@ -1,3 +1,6 @@
+# encoding: utf-8
+
+from cmath import exp, pi
 from random import random
 
 
@@ -25,3 +28,21 @@ class Psi:
                 self.amplitudes = [0] * (1 << self.n_qubits)
                 self.amplitudes[i] = 1
                 return tuple((i >> bit) % 2 for bit in range(self.n_qubits))
+    
+    ## gates
+    
+    def pi_over_eight(self, qubit):
+        """
+        applies a π/8 gate to the given qubit
+        """
+        # has to be a valid qubit
+        if qubit > self.n_qubits:
+            raise ValueError()
+        # go through each amplitude
+        for i in range(1 << self.n_qubits):
+            # find out whether that amplitude corresponds to the qubit being
+            # zero or one
+            if (i >> qubit) % 2 == 0:  # if zero
+                self.amplitudes[i] *= exp(-1j * pi / 8)
+            else:  # if one
+                self.amplitudes[i] *= exp(1j * pi / 8)
