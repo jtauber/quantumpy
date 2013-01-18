@@ -46,3 +46,18 @@ class Psi:
                 self.amplitudes[i] *= exp(-1j * pi / 8)
             else:  # if one
                 self.amplitudes[i] *= exp(1j * pi / 8)
+
+    def controlled_not(self, qubit1, qubit2):
+        """
+        applies a controlled-not gate using the first given qubit as the
+        control of the permutation of the second.
+        """
+        # the two quibits have to valid and different
+        if qubit1 > self.n_qubits or qubit2 > self.n_qubits or qubit1 == qubit2:
+            raise ValueError()
+        # make a copy of amplitudes as they update simultaneously
+        old_amplitudes = self.amplitudes[:]
+        # go through each amplitude
+        for i in range(1 << self.n_qubits):
+            # permutate qubit2 based on value of qubit1
+            self.amplitudes[i ^ (((i >> qubit1) % 2) << qubit2)] = old_amplitudes[i]
