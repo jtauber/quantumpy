@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-from cmath import exp, pi
+from cmath import exp, pi, sqrt
 from random import random
 
 
@@ -61,3 +61,21 @@ class Psi:
         for i in range(1 << self.n_qubits):
             # permutate qubit2 based on value of qubit1
             self.amplitudes[i ^ (((i >> qubit1) % 2) << qubit2)] = old_amplitudes[i]
+
+    def hadamard(self, qubit):
+        """
+        applies a Hadamard gate to the given qubit.
+        """
+        # has to be a valid qubit
+        if qubit > self.n_qubits:
+            raise ValueError()
+        # make a copy of amplitudes as they update simultaneously
+        old_amplitudes = self.amplitudes[:]
+        # go through each amplitude
+        for i in range(1 << self.n_qubits):
+            # find out whether that amplitude corresponds to the qubit being
+            # zero or one
+            if (i >> qubit) % 2 == 0:  # if zero
+                self.amplitudes[i] = (old_amplitudes[i] - old_amplitudes[i + (1 << qubit)]) / sqrt(2)
+            else:  # if one
+                self.amplitudes[i] = (old_amplitudes[i - (1 << qubit)] - old_amplitudes[i]) / sqrt(2)
