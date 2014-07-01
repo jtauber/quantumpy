@@ -15,7 +15,7 @@ class Psi:
         # in this classical simulation, we use 2^n_qubits complex numbers
         self.amplitudes = [0] * (1 << n_qubits)
         self.amplitudes[0] = 1
-    
+
     def collapse(self):
         """
         collapse the system (i.e. measure it) and return a tuple
@@ -29,9 +29,9 @@ class Psi:
                 self.amplitudes = [0] * (1 << self.n_qubits)
                 self.amplitudes[i] = 1
                 return tuple((i >> bit) % 2 for bit in range(self.n_qubits))
-    
+
     ## gates
-    
+
     def pi_over_eight(self, qubit):
         """
         applies a π/8 gate to the given qubit
@@ -83,10 +83,10 @@ class Psi:
 
 
 if __name__ == "__main__":
-    
+
     # set up a system with 3 qubits
     psi = Psi(3)
-    
+
     # apply Hadamard gate to qubit 1 (second qubit)
     psi.hadamard(1)
     # apply Hadamard gate to qubit 2 (third qubit)
@@ -95,6 +95,6 @@ if __name__ == "__main__":
     psi.pi_over_eight(1)
     # apply controlled-not gate with qubit 1 controlling qubit 0 (first qubit)
     psi.controlled_not(1, 0)
-    
+
     # collapse and print the result (a tuple of 3 classical bits)
     print(psi.collapse())
